@@ -100,3 +100,9 @@ xcodebuild -showdestinations
 
 1. 一次只能编译一个当前处于active的scheme
 2. scheme编译时，可以指定derivedDataPath 来修改编译结果输出的位置
+
+
+
+## 参考
+
+[Workspace、Project、Scheme、Target](https://www.cnblogs.com/lxlx1798/p/9369537.html)
