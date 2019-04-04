@@ -1,0 +1,11 @@
+模块框架：
+https://github.com/baidu/sofa-pbrpc
+
+通信协议
+https://github.com/google/protobuf
+
+分布式存储：oceanbase
+https://github.com/alibaba/oceanbase
+
+消息中间件：kafka
+https://github.com/apache/kafka
