@@ -1,6 +1,6 @@
 # xcodebuild 用法
 
-xcodebuild -list
+xcodebuild -list 
 
 Information about project "testxcommand":
 
@@ -30,19 +30,13 @@ Information about project "testxcommand":
 
 ​        testxcommand2
 
-
-
 以上命令用来查找当前目录下可以用来编译的项目，一般都会有 Target 和 Scheme
-
-
 
 
 
 ## 基于Target的编译
 
-
-
-xcodebuild -project testxcommand.xcodeproj -target testxcommand2 GCC_PREPROCESSOR_DEFINITIONS='KCONDITION2=1'
+`xcodebuild -project testxcommand.xcodeproj -target testxcommand2 GCC_PREPROCESSOR_DEFINITIONS='KCONDITION2=1'`
 
 -project 工程文件名
 
@@ -55,16 +49,12 @@ GCC_PREPROCESSOR_DEFINITIONS，用来指定BuildSettings中的Key-Value
 - 使用形式：GCC_PREPROCESSOR_DEFINITIONS='KCONDITION2=1’，1.如果有多个需要使用空格分割，2.KV是字符串
 - 对应工程包含的源文件中的宏条件编译(#if #endif) 
 - 设置此命令行参数，会忽略 -configuration的指定
-- 使用命令：xcodebuild -project testxcommand.xcodeproj  -target testxcommand2 -configuration Debug -showBuildSettings | grep GCC_PREPROCESSOR_DEFINITIONS，来查看指定project下的指定target下的指定configuration的对应字段的配置信息(如果使用-alltargets，则会列出工程文件和目标文件的BuildSettings)
+- 使用命令：`xcodebuild -project testxcommand.xcodeproj  -target testxcommand2 -configuration Debug -showBuildSettings | grep GCC_PREPROCESSOR_DEFINITIONS`，来查看指定project下的指定target下的指定configuration的对应字段的配置信息(如果使用-alltargets，则会列出工程文件和目标文件的BuildSettings)
 - 针对工程中的BuildSettings中的其他设置项，于此用法一致
 
 
 
-
-
-xcodebuild -project testxcommand.xcodeproj -alltargets -configuration Debug -sdk macosx10.13
-
-
+`xcodebuild -project testxcommand.xcodeproj -alltargets -configuration Debug -sdk macosx10.13`
 
 -sdk的使用
 
@@ -77,20 +67,16 @@ xcodebuild -project testxcommand.xcodeproj -alltargets -configuration Debug -sdk
 
 
 
-
-
 ## 基于Scheme的编译
 
-xcodebuild -project testxcommand.xcodeproj -scheme testxcommand -destination "platform=macOS,arch=x86_64,id=ED5E9702-6B4B-5F70-976B-531448D22E75" -destination-timeout 10 -sdk macosx10.14 -derivedDataPath ~/Desktop/build
+`xcodebuild -project testxcommand.xcodeproj -scheme testxcommand -destination "platform=macOS,arch=x86_64,id=ED5E9702-6B4B-5F70-976B-531448D22E75" -destination-timeout 10 -sdk macosx10.14 -derivedDataPath ~/Desktop/build `
 
 1. 指定scheme名称 
 2. 通过指定derivedDataPath来指定输出文件的位置
 
 
 
-xcodebuild -showdestinations
-
-​                [-project name.xcodeproj | [-workspace name.xcworkspace -scheme schemename]]
+`xcodebuild -showdestinations [-project name.xcodeproj | [-workspace name.xcworkspace -scheme schemename]]`
 
 查询编译当前项目的可用设备，从而在destination 参数中用指定编译项目
 
@@ -102,6 +88,56 @@ xcodebuild -showdestinations
 2. scheme编译时，可以指定derivedDataPath 来修改编译结果输出的位置
 
 
+
+## 基于Workspace的编译
+
+在包含workspace文件的目录下执行
+
+`xcodebuild -list`
+
+Information about workspace "testxcodebuild":
+
+​    Schemes:
+
+​        testproject
+
+​        testprojectcopy
+
+
+
+xcodebuild -workspace testxcodebuild.xcworkspace -scheme testprojectcopy -configuration Debug -derivedDataPath ./build
+
+
+
+一般情况，workspace是用来组织多个项目工程和项目相关文件的空间，基于workspace进行编译并不能一次性编译全部当前workplace下的全部工程，因为指定workspace参数的同时，也必须要指定scheme参数，而scheme的编译，每次只能指定一个；如果有依赖的情况，则需要按照依赖顺序进行依次编译
+
+
+
+## xcodebuild Action
+
+| Name                  | Description                                                  |
+| --------------------- | ------------------------------------------------------------ |
+| build                 | Build the target in the build root (SYMROOT).  This is the default action, and                                  is used if no action is given. |
+| build-for-testing     | Build the target and associated tests in the build root (SYMROOT).  This will also produce an xctestrun file in the build root. This requires specifying a scheme. |
+| analyze               | Build and analyze a target or scheme from the build root (SYMROOT).  This requires                                  specifying a scheme. |
+| archive               | Archive a scheme from the build root(SYMROOT).  This requires specifying a scheme. |
+| test                  | Test a scheme from the build root (SYMROOT).This requires specifying a scheme and optionally a destination. |
+| test-without-building | Test compiled bundles. If a scheme is provided with **-scheme** then the command  finds bundles in the build root (SRCROOT).  If an xctestrun file is provided with **-xctestrun** then the command finds bundles at paths specified in the xctestrun file. |
+| installsrc            | Copy the source of the project to the source root (SRCROOT). |
+| install               | Build the target and install it into the target's installation directory in the distribution root (DSTROOT). |
+| clean                 | Remove build products and intermediate files from the build root (SYMROOT). |
+
+- 可以指定一个或者多个action
+
+- -skipUnavailableActions，当使用多个action的时候，此参数是让跳过不可用的action继续执行其他可用的action
+
+
+
+## 指定编译目录
+
+ xcodebuild -target MyTarget OBJROOT=/Build/MyProj/Obj.root SYMROOT=/Build/MyProj/Sym.root
+
+Builds the target MyTarget in the Xcode project in the directory from which **xcodebuild** was started, putting intermediate files in the directory /Build/MyProj/Obj.root and the products of the build in the directory /Build/MyProj/Sym.root.
 
 ## 参考
 
