@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C22478BE225EDC860065C747 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C22478BD225EDC860065C747 /* UserNotifications.framework */; };
+		C22478C7225EDE310065C747 /* PushKitPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = C22478C6225EDE310065C747 /* PushKitPlugin.m */; };
+		C22478C8225EDE310065C747 /* PushKitPlugin.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C22478C5225EDE310065C747 /* PushKitPlugin.h */; };
+		C22478CD225EDE400065C747 /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C22478CC225EDE400065C747 /* PushKit.framework */; };
+		C22478CE225EE4750065C747 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C22478BD225EDC860065C747 /* UserNotifications.framework */; };
+		C22478E2225EECF40065C747 /* UIApplication+XGPushHookSetDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C22478D6225EECF40065C747 /* UIApplication+XGPushHookSetDelegate.m */; };
+		C22478E3225EECF40065C747 /* XGPushSwizzling.m in Sources */ = {isa = PBXBuildFile; fileRef = C22478DA225EECF40065C747 /* XGPushSwizzling.m */; };
+		C22478E4225EECF40065C747 /* XGPushExtendClass.m in Sources */ = {isa = PBXBuildFile; fileRef = C22478E0225EECF40065C747 /* XGPushExtendClass.m */; };
+		C22478E5225EECF40065C747 /* XGPushCheckSuper.m in Sources */ = {isa = PBXBuildFile; fileRef = C22478E1225EECF40065C747 /* XGPushCheckSuper.m */; };
 		C2E7B8EA2176DD860063AF16 /* PluginProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C2E7B8E62176DD860063AF16 /* PluginProxy.m */; };
 		C2E7B8EE2176DDCA0063AF16 /* TestPluginSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = C2E7B8ED2176DDCA0063AF16 /* TestPluginSDK.m */; };
 		C2E7B8EF2176DDD20063AF16 /* TestPluginSDK.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2E7B8EC2176DDCA0063AF16 /* TestPluginSDK.h */; };
@@ -15,6 +24,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		C22478C1225EDE310065C747 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				C22478C8225EDE310065C747 /* PushKitPlugin.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C2E7B8D82176DD3F0063AF16 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -38,6 +57,20 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C22478BD225EDC860065C747 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		C22478C3225EDE310065C747 /* libPushKitPlugin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPushKitPlugin.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C22478C5225EDE310065C747 /* PushKitPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PushKitPlugin.h; sourceTree = "<group>"; };
+		C22478C6225EDE310065C747 /* PushKitPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PushKitPlugin.m; sourceTree = "<group>"; };
+		C22478CC225EDE400065C747 /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
+		C22478D6225EECF40065C747 /* UIApplication+XGPushHookSetDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+XGPushHookSetDelegate.m"; sourceTree = "<group>"; };
+		C22478D7225EECF40065C747 /* XGPushApplicationDelegateInjectionProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XGPushApplicationDelegateInjectionProtocol.h; sourceTree = "<group>"; };
+		C22478D8225EECF40065C747 /* UIApplication+XGPushHookSetDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+XGPushHookSetDelegate.h"; sourceTree = "<group>"; };
+		C22478DA225EECF40065C747 /* XGPushSwizzling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XGPushSwizzling.m; sourceTree = "<group>"; };
+		C22478DB225EECF40065C747 /* XGPushSwizzling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XGPushSwizzling.h; sourceTree = "<group>"; };
+		C22478DE225EECF40065C747 /* XGPushExtendClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XGPushExtendClass.h; sourceTree = "<group>"; };
+		C22478DF225EECF40065C747 /* XGPushCheckSuper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XGPushCheckSuper.h; sourceTree = "<group>"; };
+		C22478E0225EECF40065C747 /* XGPushExtendClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XGPushExtendClass.m; sourceTree = "<group>"; };
+		C22478E1225EECF40065C747 /* XGPushCheckSuper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XGPushCheckSuper.m; sourceTree = "<group>"; };
 		C2E7B8DA2176DD3F0063AF16 /* libTestPluginSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTestPluginSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2E7B8E62176DD860063AF16 /* PluginProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginProxy.m; sourceTree = "<group>"; };
 		C2E7B8E82176DD860063AF16 /* PluginProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginProxy.h; sourceTree = "<group>"; };
@@ -49,6 +82,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		C22478C0225EDE310065C747 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C22478CE225EE4750065C747 /* UserNotifications.framework in Frameworks */,
+				C22478CD225EDE400065C747 /* PushKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C2E7B8D72176DD3F0063AF16 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -60,17 +102,76 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C22478BE225EDC860065C747 /* UserNotifications.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C22478C4225EDE310065C747 /* PushKitPlugin */ = {
+			isa = PBXGroup;
+			children = (
+				C22478C5225EDE310065C747 /* PushKitPlugin.h */,
+				C22478C6225EDE310065C747 /* PushKitPlugin.m */,
+			);
+			path = PushKitPlugin;
+			sourceTree = "<group>";
+		};
+		C22478D4225EECF40065C747 /* XGAOP */ = {
+			isa = PBXGroup;
+			children = (
+				C22478D5225EECF40065C747 /* XGPushApplicationDelegateHook */,
+				C22478D9225EECF40065C747 /* XGPushSwizzling */,
+				C22478DC225EECF40065C747 /* XGPushLogicInjection */,
+			);
+			path = XGAOP;
+			sourceTree = "<group>";
+		};
+		C22478D5225EECF40065C747 /* XGPushApplicationDelegateHook */ = {
+			isa = PBXGroup;
+			children = (
+				C22478D6225EECF40065C747 /* UIApplication+XGPushHookSetDelegate.m */,
+				C22478D7225EECF40065C747 /* XGPushApplicationDelegateInjectionProtocol.h */,
+				C22478D8225EECF40065C747 /* UIApplication+XGPushHookSetDelegate.h */,
+			);
+			path = XGPushApplicationDelegateHook;
+			sourceTree = "<group>";
+		};
+		C22478D9225EECF40065C747 /* XGPushSwizzling */ = {
+			isa = PBXGroup;
+			children = (
+				C22478DA225EECF40065C747 /* XGPushSwizzling.m */,
+				C22478DB225EECF40065C747 /* XGPushSwizzling.h */,
+			);
+			path = XGPushSwizzling;
+			sourceTree = "<group>";
+		};
+		C22478DC225EECF40065C747 /* XGPushLogicInjection */ = {
+			isa = PBXGroup;
+			children = (
+				C22478DD225EECF40065C747 /* Classes */,
+			);
+			path = XGPushLogicInjection;
+			sourceTree = "<group>";
+		};
+		C22478DD225EECF40065C747 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				C22478DE225EECF40065C747 /* XGPushExtendClass.h */,
+				C22478DF225EECF40065C747 /* XGPushCheckSuper.h */,
+				C22478E0225EECF40065C747 /* XGPushExtendClass.m */,
+				C22478E1225EECF40065C747 /* XGPushCheckSuper.m */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		C2E7B8D12176DD3F0063AF16 = {
 			isa = PBXGroup;
 			children = (
 				C2E7B8DC2176DD3F0063AF16 /* TestPluginSDK */,
 				C2E7B8F52176DEC50063AF16 /* Plugin */,
+				C22478C4225EDE310065C747 /* PushKitPlugin */,
 				C2E7B8DB2176DD3F0063AF16 /* Products */,
 				C2E7B9142176E7CC0063AF16 /* Frameworks */,
 			);
@@ -81,6 +182,7 @@
 			children = (
 				C2E7B8DA2176DD3F0063AF16 /* libTestPluginSDK.a */,
 				C2E7B8F42176DEC50063AF16 /* libPlugin.a */,
+				C22478C3225EDE310065C747 /* libPushKitPlugin.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -88,6 +190,7 @@
 		C2E7B8DC2176DD3F0063AF16 /* TestPluginSDK */ = {
 			isa = PBXGroup;
 			children = (
+				C22478D4225EECF40065C747 /* XGAOP */,
 				C2E7B8EC2176DDCA0063AF16 /* TestPluginSDK.h */,
 				C2E7B8ED2176DDCA0063AF16 /* TestPluginSDK.m */,
 				C2E7B8E82176DD860063AF16 /* PluginProxy.h */,
@@ -108,6 +211,8 @@
 		C2E7B9142176E7CC0063AF16 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C22478CC225EDE400065C747 /* PushKit.framework */,
+				C22478BD225EDC860065C747 /* UserNotifications.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -115,6 +220,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		C22478C2225EDE310065C747 /* PushKitPlugin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C22478C9225EDE310065C747 /* Build configuration list for PBXNativeTarget "PushKitPlugin" */;
+			buildPhases = (
+				C22478BF225EDE310065C747 /* Sources */,
+				C22478C0225EDE310065C747 /* Frameworks */,
+				C22478C1225EDE310065C747 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PushKitPlugin;
+			productName = PushKitPlugin;
+			productReference = C22478C3225EDE310065C747 /* libPushKitPlugin.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		C2E7B8D92176DD3F0063AF16 /* TestPluginSDK */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C2E7B8E32176DD3F0063AF16 /* Build configuration list for PBXNativeTarget "TestPluginSDK" */;
@@ -158,6 +280,9 @@
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = "TEG of Tencent";
 				TargetAttributes = {
+					C22478C2225EDE310065C747 = {
+						CreatedOnToolsVersion = 10.2;
+					};
 					C2E7B8D92176DD3F0063AF16 = {
 						CreatedOnToolsVersion = 10.0;
 					};
@@ -180,17 +305,30 @@
 			targets = (
 				C2E7B8D92176DD3F0063AF16 /* TestPluginSDK */,
 				C2E7B8F32176DEC50063AF16 /* Plugin */,
+				C22478C2225EDE310065C747 /* PushKitPlugin */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C22478BF225EDE310065C747 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C22478C7225EDE310065C747 /* PushKitPlugin.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C2E7B8D62176DD3F0063AF16 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C22478E3225EECF40065C747 /* XGPushSwizzling.m in Sources */,
+				C22478E5225EECF40065C747 /* XGPushCheckSuper.m in Sources */,
 				C2E7B8EA2176DD860063AF16 /* PluginProxy.m in Sources */,
 				C2E7B8EE2176DDCA0063AF16 /* TestPluginSDK.m in Sources */,
+				C22478E2225EECF40065C747 /* UIApplication+XGPushHookSetDelegate.m in Sources */,
+				C22478E4225EECF40065C747 /* XGPushExtendClass.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,6 +343,30 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		C22478CA225EDE310065C747 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C22478CB225EDE310065C747 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		C2E7B8E12176DD3F0063AF16 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -322,7 +484,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 299MFJ63GP;
-				GCC_PREFIX_HEADER = "$(SRCROOT)/TestPluginSDK/precompile.pch";
+				GCC_PREFIX_HEADER = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -335,7 +497,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 299MFJ63GP;
-				GCC_PREFIX_HEADER = "$(SRCROOT)/TestPluginSDK/precompile.pch";
+				GCC_PREFIX_HEADER = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -372,6 +534,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C22478C9225EDE310065C747 /* Build configuration list for PBXNativeTarget "PushKitPlugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C22478CA225EDE310065C747 /* Debug */,
+				C22478CB225EDE310065C747 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C2E7B8D52176DD3F0063AF16 /* Build configuration list for PBXProject "TestPluginSDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

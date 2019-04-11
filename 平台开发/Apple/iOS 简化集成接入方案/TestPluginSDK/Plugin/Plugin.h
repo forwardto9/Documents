@@ -11,4 +11,5 @@
 @interface Plugin : NSObject<PluginDelegate>
 + (instancetype)shareInstance;
 - (NSString *)showSomething;
+- (void)registerRemoteNotification:(void (^)(BOOL result, NSError *error))handler;
 @end

@@ -11,6 +11,13 @@
 @protocol PluginDelegate <NSObject>
 @required
 - (nullable NSString *)showSomething;
+- (void)registerRemoteNotification:(void (^)(BOOL result, NSError *error))handler;
+@end
+
+@protocol PluginPushKitDelegate <NSObject>
+@required
+- (void)registerPushKitInQueue:(dispatch_queue_t)queue;
+
 @end
 
 @interface PluginProxy : NSObject
@@ -18,6 +25,9 @@
 + (nonnull instancetype)shareInstance;
 
 @property (nonatomic, weak, nullable) id <PluginDelegate>delegate;
+@property (nonatomic, weak, nullable) id <PluginPushKitDelegate> pushKitDelegate;
 - (nullable NSString *)showSomething;
+- (void)registerRemoteNotification:(void (^)(BOOL result, NSError *error))handler;
+- (void)registerPushKitInQueue:(dispatch_queue_t)queue;
 
 @end

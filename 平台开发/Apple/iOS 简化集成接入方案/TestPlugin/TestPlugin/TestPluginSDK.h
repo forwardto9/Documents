@@ -10,4 +10,6 @@
 
 @interface TestPluginSDK : NSObject
 + (void)method;
++ (void)registerRemoteNotification;
++ (void)registerPushKit;
 @end

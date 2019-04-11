@@ -10,10 +10,11 @@
 @implementation PluginProxy
 
 + (instancetype)shareInstance {
-    NSLog(@"shareInstance of proxy");
+    
     static dispatch_once_t onceToken;
     static PluginProxy *proxy;
     dispatch_once(&onceToken, ^{
+        NSLog(@"shareInstance of proxy");
         proxy = [[self alloc] init];
     });
     return  proxy;
@@ -25,6 +26,18 @@
         return [self.delegate showSomething];
     } else {
         return nil;
+    }
+}
+
+- (void)registerRemoteNotification:(void (^)(BOOL, NSError *))handler {
+    if ([self.delegate respondsToSelector:@selector(registerRemoteNotification:)]) {
+        [self.delegate registerRemoteNotification:handler];
+    }
+}
+
+- (void)registerPushKitInQueue:(dispatch_queue_t)queue {
+    if ([self.pushKitDelegate respondsToSelector:@selector(registerPushKitInQueue:)]) {
+        [self.pushKitDelegate registerPushKitInQueue:queue];
     }
 }
 
