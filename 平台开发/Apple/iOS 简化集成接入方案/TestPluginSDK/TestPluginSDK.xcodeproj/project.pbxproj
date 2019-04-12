@@ -21,6 +21,8 @@
 		C2E7B8EF2176DDD20063AF16 /* TestPluginSDK.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2E7B8EC2176DDCA0063AF16 /* TestPluginSDK.h */; };
 		C2E7B8F82176DEC50063AF16 /* Plugin.m in Sources */ = {isa = PBXBuildFile; fileRef = C2E7B8F72176DEC50063AF16 /* Plugin.m */; };
 		C2E7B8F92176DEC50063AF16 /* Plugin.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2E7B8F62176DEC50063AF16 /* Plugin.h */; };
+		C2F8F7E2226033FE003265C7 /* PluginWithoutProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F8F7E1226033FE003265C7 /* PluginWithoutProxy.m */; };
+		C2F8F7E3226033FE003265C7 /* PluginWithoutProxy.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2F8F7E0226033FE003265C7 /* PluginWithoutProxy.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -54,6 +56,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C2F8F7DC226033FE003265C7 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				C2F8F7E3226033FE003265C7 /* PluginWithoutProxy.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +91,9 @@
 		C2E7B8F42176DEC50063AF16 /* libPlugin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPlugin.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2E7B8F62176DEC50063AF16 /* Plugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Plugin.h; sourceTree = "<group>"; };
 		C2E7B8F72176DEC50063AF16 /* Plugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Plugin.m; sourceTree = "<group>"; };
+		C2F8F7DE226033FE003265C7 /* libPluginWithoutProxy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPluginWithoutProxy.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2F8F7E0226033FE003265C7 /* PluginWithoutProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PluginWithoutProxy.h; sourceTree = "<group>"; };
+		C2F8F7E1226033FE003265C7 /* PluginWithoutProxy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PluginWithoutProxy.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +118,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				C22478BE225EDC860065C747 /* UserNotifications.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C2F8F7DB226033FE003265C7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -172,6 +194,7 @@
 				C2E7B8DC2176DD3F0063AF16 /* TestPluginSDK */,
 				C2E7B8F52176DEC50063AF16 /* Plugin */,
 				C22478C4225EDE310065C747 /* PushKitPlugin */,
+				C2F8F7DF226033FE003265C7 /* PluginWithoutProxy */,
 				C2E7B8DB2176DD3F0063AF16 /* Products */,
 				C2E7B9142176E7CC0063AF16 /* Frameworks */,
 			);
@@ -183,6 +206,7 @@
 				C2E7B8DA2176DD3F0063AF16 /* libTestPluginSDK.a */,
 				C2E7B8F42176DEC50063AF16 /* libPlugin.a */,
 				C22478C3225EDE310065C747 /* libPushKitPlugin.a */,
+				C2F8F7DE226033FE003265C7 /* libPluginWithoutProxy.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -215,6 +239,15 @@
 				C22478BD225EDC860065C747 /* UserNotifications.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C2F8F7DF226033FE003265C7 /* PluginWithoutProxy */ = {
+			isa = PBXGroup;
+			children = (
+				C2F8F7E0226033FE003265C7 /* PluginWithoutProxy.h */,
+				C2F8F7E1226033FE003265C7 /* PluginWithoutProxy.m */,
+			);
+			path = PluginWithoutProxy;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -271,6 +304,23 @@
 			productReference = C2E7B8F42176DEC50063AF16 /* libPlugin.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		C2F8F7DD226033FE003265C7 /* PluginWithoutProxy */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C2F8F7E4226033FE003265C7 /* Build configuration list for PBXNativeTarget "PluginWithoutProxy" */;
+			buildPhases = (
+				C2F8F7DA226033FE003265C7 /* Sources */,
+				C2F8F7DB226033FE003265C7 /* Frameworks */,
+				C2F8F7DC226033FE003265C7 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PluginWithoutProxy;
+			productName = PluginWithoutProxy;
+			productReference = C2F8F7DE226033FE003265C7 /* libPluginWithoutProxy.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -289,6 +339,9 @@
 					C2E7B8F32176DEC50063AF16 = {
 						CreatedOnToolsVersion = 10.0;
 					};
+					C2F8F7DD226033FE003265C7 = {
+						CreatedOnToolsVersion = 10.2;
+					};
 				};
 			};
 			buildConfigurationList = C2E7B8D52176DD3F0063AF16 /* Build configuration list for PBXProject "TestPluginSDK" */;
@@ -306,6 +359,7 @@
 				C2E7B8D92176DD3F0063AF16 /* TestPluginSDK */,
 				C2E7B8F32176DEC50063AF16 /* Plugin */,
 				C22478C2225EDE310065C747 /* PushKitPlugin */,
+				C2F8F7DD226033FE003265C7 /* PluginWithoutProxy */,
 			);
 		};
 /* End PBXProject section */
@@ -337,6 +391,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2E7B8F82176DEC50063AF16 /* Plugin.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C2F8F7DA226033FE003265C7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C2F8F7E2226033FE003265C7 /* PluginWithoutProxy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -484,6 +546,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 299MFJ63GP;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				GCC_PREFIX_HEADER = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -497,6 +560,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 299MFJ63GP;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				GCC_PREFIX_HEADER = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -524,6 +588,30 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 299MFJ63GP;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C2F8F7E5226033FE003265C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C2F8F7E6226033FE003265C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -566,6 +654,15 @@
 			buildConfigurations = (
 				C2E7B8FB2176DEC50063AF16 /* Debug */,
 				C2E7B8FC2176DEC50063AF16 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C2F8F7E4226033FE003265C7 /* Build configuration list for PBXNativeTarget "PluginWithoutProxy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C2F8F7E5226033FE003265C7 /* Debug */,
+				C2F8F7E6226033FE003265C7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

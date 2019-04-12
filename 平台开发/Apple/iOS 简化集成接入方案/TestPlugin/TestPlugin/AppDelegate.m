@@ -18,10 +18,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
+    [TestPluginSDK method];
     [TestPluginSDK registerRemoteNotification];
     [TestPluginSDK registerPushKit];
-//    [Plugin shareInstance];
     return YES;
 }
 
