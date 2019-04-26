@@ -295,14 +295,14 @@ b.txt:
 ```
 
 （2）`$<`
-​`$<` 指代第一个前置条件。比如，规则为 t: p1 p2，那么$< 就指代p1:
+`$<` 指代第一个前置条件。比如，规则为 t: p1 p2，那么$< 就指代p1:
 
 ```makefile
 a.txt: b.txt c.txt
     cp $< $@ 
 ```
 
-等同于下面的写法。
+等同于下面的写法:
 
 ```makefile
 a.txt: b.txt c.txt
@@ -377,21 +377,16 @@ ${function arguments}
 Makefile提供了许多内置函数，可供调用。下面是几个常用的内置函数。
 （1）shell 函数
 shell 函数用来执行 shell 命令
-
 `srcfiles := $(shell echo src/{00..99}.txt)`
-（2）wildcard 函数
-wildcard 函数用来在 Makefile 中，替换 Bash 的通配符。
-
+(2）wildcard 函数
+wildcard 函数用来在 Makefile 中，替换 Bash 的通配符
 `srcfiles := $(wildcard src/*.txt)`
-（3）subst 函数
-subst 函数用来文本替换，格式如下。
-
+(3）subst 函数
+subst 函数用来文本替换，格式如下:
 `$(subst from,to,text)`
-下面的例子将字符串"feet on the street"替换成"fEEt on the strEEt"。
-
+下面的例子将字符串"feet on the street"替换成"fEEt on the strEEt":
 `$(subst ee,EE,feet on the street)`
 下面是一个稍微复杂的例子:
-
 ```makefile
 comma:= ,
 empty:=
@@ -403,15 +398,12 @@ foo:= a b c
 bar:= $(subst $(space),$(comma),$(foo))
 # bar is now `a,b,c'.
 ```
-
-（4）patsubst函数
-patsubst 函数用于模式匹配的替换，格式如下。
-
+(4）patsubst函数
+patsubst 函数用于模式匹配的替换，格式如下:
 `$(patsubst pattern,replacement,text)`
-下面的例子将文件名"x.c.c bar.c"，替换成"x.c.o bar.o"。
-
+下面的例子将文件名"x.c.c bar.c"，替换成"x.c.o bar.o":
 `$(patsubst %.c,%.o,x.c.c bar.c)`
-（5）替换后缀名
+(5）替换后缀名
 替换后缀名函数的写法是：变量名 + 冒号 + 后缀名替换规则。它实际上patsubst函数的一种简写形式。
 
 `min: $(OUTPUT:.js=.min.js)`
