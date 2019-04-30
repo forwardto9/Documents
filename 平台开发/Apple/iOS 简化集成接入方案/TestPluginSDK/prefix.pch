@@ -1,0 +1,24 @@
+//
+//  prefix.pch
+//  TestPluginSDK
+//
+//  Created by uwei on 2019/4/30.
+//  Copyright © 2019 TEG of Tencent. All rights reserved.
+//
+
+#ifndef prefix_h
+#define prefix_h
+
+#define ARK_PREFIX T
+
+//#define ARK_impl2(prefix, symbol) prefix ## symbol
+//#define ARK(symbol) ARK_impl2(ARK_PREFIX, symbol)
+
+#define ARK_impl2(prefix, symbol) prefix ## symbol
+#define ARK_impl(prefix, symbol) ARK_impl2(prefix, symbol)
+#define ARK(symbol) ARK_impl(ARK_PREFIX, symbol)
+
+
+#define TestPluginSDK ARK(SDK) 
+
+#endif /* prefix_h */

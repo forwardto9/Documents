@@ -83,6 +83,7 @@
 		C22478DF225EECF40065C747 /* XGPushCheckSuper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XGPushCheckSuper.h; sourceTree = "<group>"; };
 		C22478E0225EECF40065C747 /* XGPushExtendClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XGPushExtendClass.m; sourceTree = "<group>"; };
 		C22478E1225EECF40065C747 /* XGPushCheckSuper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XGPushCheckSuper.m; sourceTree = "<group>"; };
+		C2CF940D227841DA00ECCEA5 /* prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		C2E7B8DA2176DD3F0063AF16 /* libTestPluginSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTestPluginSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2E7B8E62176DD860063AF16 /* PluginProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginProxy.m; sourceTree = "<group>"; };
 		C2E7B8E82176DD860063AF16 /* PluginProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginProxy.h; sourceTree = "<group>"; };
@@ -191,6 +192,7 @@
 		C2E7B8D12176DD3F0063AF16 = {
 			isa = PBXGroup;
 			children = (
+				C2CF940D227841DA00ECCEA5 /* prefix.pch */,
 				C2E7B8DC2176DD3F0063AF16 /* TestPluginSDK */,
 				C2E7B8F52176DEC50063AF16 /* Plugin */,
 				C22478C4225EDE310065C747 /* PushKitPlugin */,
@@ -547,7 +549,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 299MFJ63GP;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
-				GCC_PREFIX_HEADER = "";
+				GCC_PREFIX_HEADER = "$(SRCROOT)/prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -561,7 +563,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 299MFJ63GP;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
-				GCC_PREFIX_HEADER = "";
+				GCC_PREFIX_HEADER = "$(SRCROOT)/prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
