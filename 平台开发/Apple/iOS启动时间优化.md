@@ -181,9 +181,9 @@ Objective-C 中有很多数据结构都是靠 Rebasing 和 Binding 来修正（f
 
 Rebase&&Binding该阶段的优化关键在于减少`__DATA` segment中的指针数量。我们可以优化的点有：
 
-```
-`①减少Objc类数量， 减少selector数量，把未使用的类和函数都可以删掉  ②减少C++虚函数数量 ③转而使用swift stuct（其实本质上就是为了减少符号的数量，使用swift语言来开发?）`
-```
+1. 减少Objc类数量， 减少selector数量，把未使用的类和函数都可以删掉
+2. 减少C++虚函数数量
+3. 转而使用swift stuct（其实本质上就是为了减少符号的数量，使用swift语言来开发?）
 
 未使用类的扫描，可以利用linkmap文件和otool工机具反编译APP的可进行二进制文件得出一个大概的结果，但是不算非常精确，扫描出来后需要手动一个个确认。扫描原理大致是classlist和classref两者的差值，所有的类和使用了的类的差值就是未使用的类啦。因为未使用的类主要优化的是pre-main的时间，根据测试我们的工程pre-main时间并不长，所以本次并没有针对这一块做优化。（TODO：写脚本来验证这一点）。
 
@@ -262,7 +262,9 @@ pre-main阶段耗时的影响因素：
 - 将不必须在+load方法中做的事情延迟到+initialize中，尽量不要用C++虚函数(创建虚函数表有开销)
 - 类和方法名不要太长：iOS每个类和方法名都在__cstring段里都存了相应的字符串值，所以类和方法名的长短也是对可执行文件大小是有影响的； 因还是object-c的动态特性，因为需要通过类/方法名反射找到这个类/方法进行调用，object-c对象模型会把类/方法名字符串都保存下来；
 - 用dispatch_once()代替所有的 attribute((constructor)) 函数、C++静态对象初始化、ObjC的+load函数；
-- 在设计师可接受的范围内压缩图片的大小，会有意外收获。 压缩图片为什么能加快启动速度呢？因为启动的时候大大小小的图片加载个十来二十个是很正常的， 图片小了，IO操作量就小了，启动当然就会快了，比较靠谱的压缩算法是TinyPNG。`
+- 在设计师可接受的范围内压缩图片的大小，会有意外收获。 压缩图片为什么能加快启动速度呢？因为启动的时候大大小小的图片加载个十来二十个是很正常的， 图片小了，IO操作量就小了，启动当然就会快了，比较靠谱的压缩算法是TinyPNG
+
+[延迟pre-main的方法](https://everettjf.github.io/2017/03/06/a-method-of-delay-premain-code/)
 
 #### 我们的实践
 
@@ -375,7 +377,11 @@ iPhoneX iOS11.3.1系统优化前main阶段的时间消耗基本在1.5秒以上�
 
 
 
-#### 参考链接：
+#### 参考链接
+
+[App Startup Time: Past, Present, and Future](https://developer.apple.com/videos/play/wwdc2017/413/)
+
+[Optimizing App Startup Time](https://developer.apple.com/videos/play/wwdc2016/406)
 
 1.[优化 App 的启动时间](http://yulingtianxia.com/blog/2016/10/30/Optimizing-App-Startup-Time/);
 
