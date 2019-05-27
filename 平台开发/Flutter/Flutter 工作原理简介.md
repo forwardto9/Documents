@@ -144,3 +144,6 @@ Flutter 可以说在性能更加的高，在跨平台解决方案上更加彻底
 [Flutter 原理简解](https://juejin.im/entry/5afa9769518825428630a61c)
 
 [Flutter 工作原理简介](https://github.com/lijiakof/flutter-tutorial/blob/master/docs/flutter-principle.md)
+
+[跨平台技术演进](https://juejin.im/post/5ca1671651882567d41ebf6d)
+
