@@ -136,3 +136,11 @@ Flutter 可以说是跨平台解决方案的再一次进化，它直接借助 Op
 ![flutter-pattern](../../其他文档/resources/flutter/flutter-pattern.png)
 
 Flutter 可以说在性能更加的高，在跨平台解决方案上更加彻底，但是它的学习曲线相对陡峭，并且刚刚起步，生态还为形成，不过潜力还是非常大。
+
+
+
+## 参考
+
+[Flutter 原理简解](https://juejin.im/entry/5afa9769518825428630a61c)
+
+[Flutter 工作原理简介](https://github.com/lijiakof/flutter-tutorial/blob/master/docs/flutter-principle.md)
