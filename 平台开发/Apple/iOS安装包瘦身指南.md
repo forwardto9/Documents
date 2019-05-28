@@ -47,6 +47,8 @@
 ### 去除空函数及默认实现的函数
 
 有些函数只是实现了一个[super function],例如didReciveMemoryWarning，或者viewDidAppear如果没做额外的处理其实都是可以删除的。
+### 去除常量字符创
+对于项目中使用到的字符串常量，可以考虑替换策略，比如用code代替message
 
 ### 统计项目中各工程在可执行文件的大小占比
 
