@@ -220,3 +220,575 @@ Dart 2 的改进集中在优化客户端开发。但 Dart 仍然是构建服务�
 
 Flutter开发安装包下载[GitHub地址](https://github.com/flutter)，上面还有很多用例可以参照
 
+
+
+### For iOS View
+
+UIView 粗略的等于 Widget
+
+Widget 是基于 State， 当state或者是Widget被改变，Flutter框架重新创建Widget树，相比较 iOS则不会
+
+Widget相比 UIView，更加轻量，因为Widget是不可修改的，且Widget不是 view，不直接参与绘制，只是描述UI的结构
+
+Cupertino Widget是推荐的UI框架
+
+#### Update View
+
+StatelessWidget
+
+StatefulWidget
+
+State of Widget
+
+#### Layout
+
+Only in Code by composing a widget tree
+
+iOS，UITableView，UICollectionView，UIScrollView,  didSelect方法
+
+Flutter，ListView，ListView.build, onTap方法
+
+#### Add & Remove(modify view's hierarchy) 
+
+没有类似 iOS 中的 addSubview、removeFromParentView 的方法，
+
+替代方法是：将创建Widget的方法作为参数传递到父类，使用一个flag开关来控制子控件的创建
+
+```dart
+class _SampleAppPageState extends State<SampleAppPage> {
+  // Default value for toggle
+  bool toggle = true; // 开关，用于控制控件创建的逻辑
+  void _toggle() {
+    setState(() {
+      toggle = !toggle;
+    });
+  }
+
+  // 创建Widget的方法
+  _getToggleChild() {
+    if (toggle) {
+      return Text('Toggle One');
+    } else {
+      return CupertinoButton(
+        onPressed: () {},
+        child: Text('Toggle Two'),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Sample App"),
+      ),
+      body: Center(
+        child: _getToggleChild(), // 创建Widget的方法作为参数
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _toggle,
+        tooltip: 'Update Text',
+        child: Icon(Icons.update),
+      ),
+    );
+  }
+}
+```
+
+#### Animation
+
+在Flutter 中，使用 Animation Library 封装 一个 Widget 到一个可以动画的 Widget中
+
+Animation Controller，
+
+Animation 类簇
+
+Ticker 类簇（发送垂直信号）
+
+```dart
+// Mixins是一种在多个类层次结构中重用类代码的方法
+// 要使用mixin，请使用with关键字后跟一个或多个mixin名称
+// TickerProviderStateMixin, 使用Ticker
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+
+  AnimationController controller; //  Animation Controller
+  CurvedAnimation curve; // Animation 类簇
+  bool toggle = true; // 开关
+  
+  void _toggle() { // 触发动画的向前和后置
+    setState(() {
+      if (toggle) {
+        controller.forward();
+      } else {
+        controller.reverse();
+      }
+      toggle = !toggle;
+    });
+  }
+
+  @override
+  void initState() { // 初始化
+    super.initState();
+    controller = AnimationController(duration: const Duration(milliseconds: 2000), vsync: this);
+    curve = CurvedAnimation(parent: controller, curve: Curves.easeIn);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+          child: Container(
+              child: FadeTransition(
+                  opacity: curve, // 使用 Animation
+                  child: FlutterLogo(
+                    size: 100.0,
+                  )
+              )
+          )
+      ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'Fade',
+        child: Icon(Icons.brush),
+        onPressed: () {
+          controller.forward();
+          _toggle();
+        },
+      ),
+    );
+  }
+  
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+```
+
+
+
+#### Drawing
+
+iOS，CoreGraphics Framework
+
+Flutter，Canvas，CustomPaint， CustomPainter
+
+```dart
+import 'package:flutter/material.dart';
+
+class SignaturePainter extends CustomPainter {
+  SignaturePainter(this.points);
+
+  final List<Offset> points;
+
+  void paint(Canvas canvas, Size size) {
+    Paint paint = new Paint()
+      ..color = Colors.black
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = 5.0;
+    for (int i = 0; i < points.length - 1; i++) {
+      if (points[i] != null && points[i + 1] != null)
+        canvas.drawLine(points[i], points[i + 1], paint);
+    }
+  }
+
+  bool shouldRepaint(SignaturePainter other) => other.points != points;
+}
+
+class Signature extends StatefulWidget {
+  SignatureState createState() => new SignatureState();
+}
+
+class SignatureState extends State<Signature> {
+  List<Offset> _points = <Offset>[];
+
+  Widget build(BuildContext context) {
+    return new Stack(
+      children: [
+        GestureDetector(
+          onPanUpdate: (DragUpdateDetails details) {
+            RenderBox referenceBox = context.findRenderObject();
+            Offset localPosition =
+                referenceBox.globalToLocal(details.globalPosition);
+            setState(() {
+              _points = new List.from(_points)..add(localPosition);
+            });
+          },
+          onPanEnd: (DragEndDetails details) => _points.add(null),
+        ),
+        
+        // CustomPaint(painter: SignaturePainter(_points), size: Size.infinite), 
+        // 上面的代码无效，为什么要 new ？
+        CustomPaint(painter: new SignaturePainter(_points))
+      ],
+    );
+  }
+}
+
+class DemoApp extends StatelessWidget {
+  Widget build(BuildContext context) => new Scaffold(body: new Signature());
+}
+
+void main() => runApp(new MaterialApp(home: new DemoApp()));
+```
+
+
+
+#### Opacity
+
+iOS，property，opacity、alhpa
+
+Flutter，Opacity widget
+
+
+
+#### Custom Widget
+
+iOS，继承UIView
+
+Flutter，组合多个Widget到一个Widget
+
+```dart
+// 创建方法
+class CustomButton extends StatelessWidget {
+  final String label;
+
+  CustomButton(this.label);
+
+  @override
+  Widget build(BuildContext context) {
+    return RaisedButton(onPressed: () {}, child: Text(label));
+  }
+}
+
+// 使用方法
+@override
+Widget build(BuildContext context) {
+  return Center(
+    child: CustomButton("Hello"),
+  );
+}
+```
+
+### For iOS Navigation
+
+#### between pages
+
+iOS, UINavigationController
+
+Flutter，Navigator，Router
+
+Router，类似UIViewController，Navigator 类似UINavigationController（pop，push）
+
+
+
+#### between Apps
+
+iOS，URL Scheme
+
+Flutter，使用原生或者是封装原生的插件，比如url_lanucher
+
+ #### Pop to iOS native VC
+
+SystemNavigator.pop()， 不管用的话，就使用Platform channel 去调用原生
+
+### Threading & asynchronicity
+
+#### async
+
+参照dart语言中的 async 关键字来标识函数
+
+#### background thread
+
+参照dart语言中的 async、await 关键字来标识函数，如果是CPU密集任务，则使用 Isolate进行任务线程隔离，来避免事件Loop被阻塞，但是这里就不能更新UI，但是可以通过setState()来更新UI
+
+```dart
+loadData() async {
+  String dataURL = "https://jsonplaceholder.typicode.com/posts";
+  http.Response response = await http.get(dataURL);
+  setState(() {
+    widgets = json.decode(response.body);
+  });
+}
+```
+
+### Project structure, localization, dependencies and assets
+
+#### Images
+
+iOS，image resources, assets
+
+Flutter, assets, 不仅仅是图片，其他文件也可以
+
+声明方式：pubspec.yaml
+
+```yaml
+assets:
+ - my-assets/data.json
+```
+
+引用方式：AssetBundle
+
+```dart
+import 'dart:async' show Future;
+import 'package:flutter/services.dart' show rootBundle;
+
+Future<String> loadAsset() async {
+  return await rootBundle.loadString('my-assets/data.json');
+}
+```
+
+使用不同分辨率的图片，使用类似iOS的命名方式：1.0x, 2.0x, 3.0x，创建任意文件夹，比如images，文件放置目录的方式：
+
+```
+images/my_icon.png       // Base: 1.0x image
+images/2.0x/my_icon.png  // 2.0x image
+images/3.0x/my_icon.png  // 3.0x image
+```
+
+声明图片：pubspec.yaml
+
+```yaml
+assets:
+ - images/my_icon.png
+```
+
+引用方式：AssetImage/Image
+
+```dart
+// 方式一
+return AssetImage("images/a_dot_burr.jpeg");
+
+// 方式二
+@override
+Widget build(BuildContext context) {
+  return Image.asset("images/my_image.png");
+}
+```
+
+#### Localization
+
+iOS, Localizable.strings 文件
+
+Flutter，使用类似Java的常量类来封装字符串，默认只支持En，如果需要，需要引用 flutter_localizations、intl package
+
+```dart
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+MaterialApp(
+ localizationsDelegates: [
+   // Add app-specific localization delegate[s] here
+   GlobalMaterialLocalizations.delegate,
+   GlobalWidgetsLocalizations.delegate,
+ ],
+ supportedLocales: [
+    const Locale('en', 'US'), // English
+    const Locale('he', 'IL'), // Hebrew
+    // ... other locales the app supports
+  ],
+  // ...
+)
+```
+
+要访问本地化资源，请使用 Localizations.of() 方法访问由给定委托提供的特定本地化类。 使用intl_translation包将可翻译的副本提取到arb文件进行翻译，然后将它们导回到应用程序中以便与intl一起使用
+
+#### CocoaPods
+
+一般原生依赖使用，否则dart主要依赖pubspec.yaml文件来解决依赖包的问题
+
+
+
+### Liftcycle Event
+
+iOS，过载来实现
+
+Flutter，hook WidgetBinging 观察者和监听 didChangeAppLifecycleState() 改变事件
+
+- inactive，Android 没有
+- paused，不可见，不响应用户输入，但是在后台运行
+- resumed
+- suspending，iOS 没有
+
+
+
+### Gesture & Touch
+
+#### 监听 Widget
+
+iOS， GestureRecogniezer
+
+Flutter，两种方式：
+
+1. 支持事件的控件，实现响应事件类型的处理方法即可
+
+   ```dart
+   @override
+   Widget build(BuildContext context) {
+     return RaisedButton(
+       onPressed: () {
+         print("click");
+       },
+       child: Text("Button"),
+     );
+   }
+   ```
+
+   
+
+2. 不支持事件的控件，将Widget封装到一个GestureDetector中，然后传递一个方法到onTap参数
+
+   ```dart
+   class SampleApp extends StatelessWidget {
+     @override
+     Widget build(BuildContext context) {
+       return Scaffold(
+         body: Center(
+           child: GestureDetector(
+             child: FlutterLogo(
+               size: 200.0,
+             ),
+             onTap: () {
+               print("tap");
+             },
+           ),
+         ),
+       );
+     }
+   }
+   ```
+
+   #### 支持的事件类型
+
+   - Taping
+
+     - onTapDown
+     - onTapUp
+     - onTap
+     - onTapCancel
+
+   - Double tap
+
+     - onDoubleTap
+
+   - Long Press
+
+     - onLongPress
+
+   - Vertical dragging
+
+     - onVerticalDragStart
+     - onVerticalDragUpdate
+     - onVerticalDragEnd
+
+   - Horizontal dragging
+
+     同上
+
+### Theming And Text
+
+#### Theme
+
+- MaterialApp， 支持自定义子控件的颜色和样式，传递一个ThemeData对象
+- Cupertino 库
+
+#### Text
+
+iOS，ttf文件，在info.plist文件中创建引用即可
+
+Flutter，ttf文件，工程目录中任意位置，在pubspec.yaml文件中声明引用，类似图片一样
+
+```yaml
+fonts:
+   - family: MyCustomFont
+     fonts:
+       - asset: fonts/MyCustomFont.ttf
+       - style: italic
+```
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text("Sample App"),
+    ),
+    body: Center(
+      child: Text(
+        'This is a custom font text',
+        style: TextStyle(fontFamily: 'MyCustomFont'),
+      ),
+    ),
+  );
+}
+```
+
+### Form Input
+
+```dart
+class _MyFormState extends State<MyForm> {
+  // Create a text controller and use it to retrieve the current value.
+  // of the TextField!
+  final myController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when disposing of the Widget.
+    myController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Retrieve Text Input'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: TextField(
+          controller: myController,
+          decoration: InputDecoration(hintText: "placeholder"), // 默认占位符
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        // When the user presses the button, show an alert dialog with the
+        // text the user has typed into our text field.
+        onPressed: () {
+          return showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                // Retrieve the text the user has typed in using our
+                // TextEditingController
+                content: Text(myController.text),
+              );
+            },
+          );
+        },
+        tooltip: 'Show me the value!',
+        child: Icon(Icons.text_fields),
+      ),
+    );
+  }
+}
+```
+
+### 集成硬件、第三方服务和平台
+
+Flutter不直接在底层平台上运行代码; 相反，构成Flutter应用程序的Dart代码在本地设备上运行，“回避”平台提供的SDK。 这意味着，例如，当在Dart中执行网络请求时，它将直接在Dart上下文中运行。 在编写本地应用程序时，通常不利用的Android或iOS API。 Flutter应用程序在本地应用程序的ViewController中仍作为视图托管，但无法直接访问ViewController本身或本地框架。
+
+Flutter 提供 Platform channel 来与原生 API进行通信
+
+优先使用 dart plugin
+
+### 缓存
+
+
+
+| iOS          | Flutter                | Note |
+| ------------ | ---------------------- | ---- |
+| UserDefaults | SharePreference plugin |      |
+| CoreData     | SQFlite plugin         |      |
+
