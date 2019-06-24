@@ -222,9 +222,13 @@ Flutter开发安装包下载[GitHub地址](https://github.com/flutter)，上面�
 
 
 
-### For iOS View
+### For View
 
-UIView 粗略的等于 Widget
+iOS，UIView
+
+Android， View
+
+Flutter，Widget
 
 Widget 是基于 State， 当state或者是Widget被改变，Flutter框架重新创建Widget树，相比较 iOS则不会
 
@@ -244,15 +248,21 @@ State of Widget
 
 Only in Code by composing a widget tree
 
-iOS，UITableView，UICollectionView，UIScrollView,  didSelect方法
+|        | iOS                                         | Android                                 | Flutter                  |
+| ------ | ------------------------------------------- | --------------------------------------- | ------------------------ |
+| List   | UITableView，UICollectionView，UIScrollView | LinearLayout等类，ScrollView， ListView | ListView，ListView.build |
+| select | didSelect                                   | onItemClickListener                     | onTap                    |
+| update | reloadData                                  | notifyDataSetChanged                    | setState                 |
 
-Flutter，ListView，ListView.build, onTap方法
+
 
 #### Add & Remove(modify view's hierarchy) 
 
-没有类似 iOS 中的 addSubview、removeFromParentView 的方法，
+iOS，addSubview、removeFromParentView
 
-替代方法是：将创建Widget的方法作为参数传递到父类，使用一个flag开关来控制子控件的创建
+Android，addChild，removeChild
+
+Flutter,替代方法是：将创建Widget的方法作为参数传递到父类，使用一个flag开关来控制子控件的创建
 
 ```dart
 class _SampleAppPageState extends State<SampleAppPage> {
@@ -297,7 +307,11 @@ class _SampleAppPageState extends State<SampleAppPage> {
 
 #### Animation
 
-在Flutter 中，使用 Animation Library 封装 一个 Widget 到一个可以动画的 Widget中
+iOS, Animation类，UIView实例的animate方法
+
+Android，XML，或者是 View 实例的animate方法
+
+Flutter，使用 Animation Library 封装 一个 Widget 到一个可以动画的 Widget中
 
 Animation Controller，
 
@@ -372,6 +386,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 #### Drawing
 
 iOS，CoreGraphics Framework
+
+Android，Canvas，Drawable 类
 
 Flutter，Canvas，CustomPaint， CustomPainter
 
@@ -448,6 +464,8 @@ Flutter，Opacity widget
 
 iOS，继承UIView
 
+Android，继承View，或者是使用已经存在的View，然后override相应的方法来达到想要的效果
+
 Flutter，组合多个Widget到一个Widget
 
 ```dart
@@ -472,17 +490,50 @@ Widget build(BuildContext context) {
 }
 ```
 
-### For iOS Navigation
+### For Navigation
 
 #### between pages
 
 iOS, UINavigationController
 
+Android，Intent，在Activity之间切换或者是组件之间传递数据，调用外部组件（照相机等）
+
 Flutter，Navigator，Router
 
 Router，类似UIViewController，Navigator 类似UINavigationController（pop，push）
 
+```dart
+void main() {
+  runApp(CupertinoApp(
+    home: MyAppHome(), // becomes the route named '/'
+    routes: <String, WidgetBuilder> {
+      '/a': (BuildContext context) => MyPage(title: 'page A'),
+      '/b': (BuildContext context) => MyPage(title: 'page B'),
+      '/c': (BuildContext context) => MyPage(title: 'page C'),
+    },
+  ));
+}
+```
 
+导航到指定页的代码：
+
+```dart
+Navigator.of(context).pushNamed('/b');
+```
+
+
+
+Android,startActivityForResult()
+
+Flutter,
+
+```dart
+// start
+Map coordinates = await Navigator.of(context).pushNamed('/location');
+
+// pop
+Navigator.of(context).pop({"lat":43.821757,"long":-79.226392});
+```
 
 #### between Apps
 
@@ -502,6 +553,10 @@ SystemNavigator.pop()， 不管用的话，就使用Platform channel 去调用�
 
 #### background thread
 
+iOS, 除了VoIP应用外，其他不允许长时间的后台用户级的线程存在
+
+Android, AsyncTask，LiveData，IntentService，JobScheduler，RxJava Pipeline
+
 参照dart语言中的 async、await 关键字来标识函数，如果是CPU密集任务，则使用 Isolate进行任务线程隔离，来避免事件Loop被阻塞，但是这里就不能更新UI，但是可以通过setState()来更新UI
 
 ```dart
@@ -514,11 +569,34 @@ loadData() async {
 }
 ```
 
+
+
+#### network request
+
+iOS，URL Loading System
+
+Android，OkHttp
+
+Flutter，http package
+
+
+
 ### Project structure, localization, dependencies and assets
 
 #### Images
 
 iOS，image resources, assets
+
+Android，image resources, assets， res/drawable-*, no dp, logiccal pixel
+
+| Android density qualifier | Flutter pixel ratio |
+| ------------------------- | ------------------- |
+| `ldpi`                    | `0.75x`             |
+| `mdpi`                    | `1.0x`              |
+| `hdpi`                    | `1.5x`              |
+| `xhdpi`                   | `2.0x`              |
+| `xxhdpi`                  | `3.0x`              |
+| `xxxhdpi`                 | `4.0x`              |
 
 Flutter, assets, 不仅仅是图片，其他文件也可以
 
@@ -594,15 +672,21 @@ MaterialApp(
 
 要访问本地化资源，请使用 Localizations.of() 方法访问由给定委托提供的特定本地化类。 使用intl_translation包将可翻译的副本提取到arb文件进行翻译，然后将它们导回到应用程序中以便与intl一起使用
 
-#### CocoaPods
+#### Dependency
 
-一般原生依赖使用，否则dart主要依赖pubspec.yaml文件来解决依赖包的问题
+iOS,CocoaPods,一般原生依赖使用
+
+Android, Gradle,一般原生依赖使用
+
+Flutter, 主要依赖pubspec.yaml文件来解决依赖包
 
 
 
 ### Liftcycle Event
 
-iOS，过载来实现
+iOS, override the object method
+
+Android, override the object method,或者是在Application类上注册ActivityLifecycleCallbacks
 
 Flutter，hook WidgetBinging 观察者和监听 didChangeAppLifecycleState() 改变事件
 
@@ -619,7 +703,11 @@ Flutter，hook WidgetBinging 观察者和监听 didChangeAppLifecycleState() 改
 
 iOS， GestureRecogniezer
 
-Flutter，两种方式：
+Android，在setOnClickListener中调用onClick
+
+Flutter，GestureDetector
+
+两种方式：
 
 1. 支持事件的控件，实现响应事件类型的处理方法即可
 
@@ -696,6 +784,8 @@ Flutter，两种方式：
 #### Text
 
 iOS，ttf文件，在info.plist文件中创建引用即可
+
+Android，创建Font resource文件，并传递给TextView的FontFamily参数
 
 Flutter，ttf文件，工程目录中任意位置，在pubspec.yaml文件中声明引用，类似图片一样
 
@@ -785,10 +875,8 @@ Flutter 提供 Platform channel 来与原生 API进行通信
 
 ### 缓存
 
-
-
-| iOS          | Flutter                | Note |
-| ------------ | ---------------------- | ---- |
-| UserDefaults | SharePreference plugin |      |
-| CoreData     | SQFlite plugin         |      |
+| iOS             | Android                 | Flutter                | Note |
+| --------------- | ----------------------- | ---------------------- | ---- |
+| UserDefaults    | SharedPreferences       | SharePreference plugin |      |
+| CoreData/SQLite | android.database.sqlite | SQFlite plugin         |      |
 
