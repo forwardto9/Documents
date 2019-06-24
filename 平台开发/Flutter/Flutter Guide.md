@@ -254,7 +254,7 @@ Only in Code by composing a widget tree
 | select | didSelect                                   | onItemClickListener                     | onTap                    |
 | update | reloadData                                  | notifyDataSetChanged                    | setState                 |
 
-
+![sample-flutter-layout](../../其他文档/resources/sample-flutter-layout.png)
 
 #### Add & Remove(modify view's hierarchy) 
 
