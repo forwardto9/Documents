@@ -139,10 +139,56 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode)
 
 @end
 
+@interface MyWorkerClass : NSObject<NSPortDelegate>
++(void)LaunchThreadWithPort:(id)inData;
+- (BOOL)shouldExit;
+@property (strong, nonatomic) NSPort *remotePort;
+@end
+
+@implementation MyWorkerClass
+
++(void)LaunchThreadWithPort:(id)inData
+{
+    // Set up the connection between this thread and the main thread.
+    NSPort* distantPort = (NSPort*)inData;
+ 
+    MyWorkerClass*  workerObj = [[self alloc] init];
+    [workerObj sendCheckinMessage:distantPort];
+ 
+    // Let the run loop process things.
+    do
+    {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }
+    while (![workerObj shouldExit]);
+}
+
+// Worker thread check-in method
+- (void)sendCheckinMessage:(NSPort*)outPort
+{
+    // Retain and save the remote port for future use.
+    [self setRemotePort:outPort];
+ 
+    // Create and configure the worker thread port.
+    NSPort* myPort = [NSMachPort port];
+    [myPort setDelegate:self];
+    [[NSRunLoop currentRunLoop] addPort:myPort forMode:NSDefaultRunLoopMode];
+ 
+    // Create the check-in message.(macOS)
+//    NSPortMessage* messageObj = [[NSPortMessage alloc] initWithSendPort:outPort receivePort:myPort components:nil];
+//
+//    if (messageObj)
+//    {
+//        // Finish configuring the message and send it immediately.
+//        [messageObj setMsgId:setMsgid:kCheckinMessage];
+//        [messageObj sendBeforeDate:[NSDate date]];
+//    }
+}
+
+@end
 
 
-
-@interface AppDelegate () {
+@interface AppDelegate () <NSPortDelegate> {
     NSMutableArray *sourcesToPing;
 }
 
@@ -241,5 +287,46 @@ void myRunLoopObserver(CFRunLoopObserverRef observer, CFRunLoopActivity activity
     // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
 }
 
+
+
+- (void)launchThread
+{
+    NSPort* myPort = [NSMachPort port];
+    if (myPort)
+    {
+        // This class handles incoming port messages.
+        [myPort setDelegate:self];
+ 
+        // Install the port as an input source on the current run loop.
+        [[NSRunLoop currentRunLoop] addPort:myPort forMode:NSDefaultRunLoopMode];
+ 
+        // Detach the thread. Let the worker release the port.
+        [NSThread detachNewThreadSelector:@selector(LaunchThreadWithPort:) toTarget:[MyWorkerClass class] withObject:myPort];
+    }
+}
+
+
+#define kCheckinMessage 100
+
+#pragma mark - NSMachPortDelegate
+// Handle responses from the worker thread.(macOS)
+- (void)handlePortMessage:(NSPortMessage *)portMessage
+{
+//    unsigned int message = [portMessage msgid];
+//    NSPort* distantPort = nil;
+// 
+//    if (message == kCheckinMessage)
+//    {
+//        // Get the worker thread’s communications port.
+//        distantPort = [portMessage sendPort];
+// 
+//        // Retain and save the worker port for later use.
+//        [self storeDistantPort:distantPort];
+//    }
+//    else
+//    {
+//        // Handle other messages.
+//    }
+}
 
 @end
