@@ -17,7 +17,7 @@
 | ---------------------------- | ------------------------------------------------------------ |
 | Operation objects            | 在OS X v10.5中引入的 Operation 对象是通常在辅助线程上执行的任务的封装器。 这个封装器隐藏了执行任务的线程管理方面，让您可以专注于任务本身。 您通常将这些对象与Operation Queue 对象结合使用，该 Operation Queue 对象实际上管理一个或多个线程上的 Operation 对象的执行。[Concurrency Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ConcurrencyProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40008091) |
 | Grand Central Dispatch (GCD) | Grand Central Dispatch在Mac OS x v10.6中引入，是线程的另一种替代方案，可让您专注于执行所需的任务，而不是线程管理。 使用GCD，您可以定义要执行的任务并将其添加到工作队列，该队列在适当的线程上处理任务的计划。 工作队列考虑到可用内核的数量以及比使用线程自己更有效地执行任务的当前负载。 |
-| Idle-time notifications      | 对于相对较短且优先级较低的任务，空闲时间通知允许您在应用程序不忙时执行任务。 Cocoa 使用NSNotificationQueue对象提供对空闲时间通知的支持。 要请求空闲时间通知，请使用NSPostWhenIdle选项将通知发布到默认NSNotificationQueue对象。 队列延迟通知对象的传递，直到运行循环变为空闲 |
+| Idle-time notifications      | 对于相对较短且优先级较低的任务，空闲时间通知允许您在应用程序不忙时执行任务。 Cocoa 使用NSNotificationQueue对象提供对空闲时间通知的支持。 要请求空闲时间通知，请使用NSPostWhenIdle选项将通知发布到默认NSNotificationQueue对象。 队列延迟通知对象的传递，直到 RunLoop 变为空闲 |
 | Asynchronous functions       | 系统接口包括许多为您提供自动并发的异步函数。 这些API可以使用系统守护程序和进程，或创建自定义线程来执行其任务并将结果返回给您。 （实际的实现是无关紧要的，因为它与代码分开。）在设计应用程序时，查找提供异步行为的函数，并考虑使用它们而不是在自定义线程上使用等效的同步函数。 |
 | Timers                       | 您可以在应用程序的主线程上使用计时器来执行定期任务，这些任务太简单而不需要线程，但仍需要定期维护 [Timer Sources](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html#//apple_ref/doc/uid/10000057i-CH16-SW21) |
 | Separate processes           | 尽管比线程更重，但在任务与应用程序只是切线相关的情况下，创建单独的进程可能很有用。 如果任务需要大量内存或必须使用root权限执行，则可以使用进程。 例如，您可以使用64位服务器进程计算大型数据集，而32位应用程序将结果显示给用户。 |
@@ -41,11 +41,11 @@
 
 ### Run Loops
 
-运行循环是一个基础结构，用于管理在线程上异步到达的事件。运行循环通过监视线程的一个或多个事件源来工作。当事件到达时，系统唤醒线程并将事件调度到运行循环，然后运行循环将它们分派给您指定的处理程序。如果没有事件存在且准备好处理，则运行循环使线程进入休眠状态。
+ RunLoop 是一个基础结构，用于管理在线程上异步到达的事件。 RunLoop 通过监视线程的一个或多个事件源来工作。当事件到达时，系统唤醒线程并将事件调度到 RunLoop ，然后 RunLoop 将它们分派给您指定的处理程序。如果没有事件存在且准备好处理，则 RunLoop 使线程进入休眠状态。
 
-您不需要对您创建的任何线程使用运行循环，但这样做可以为用户提供更好的体验。运行循环可以创建使用最少量资源的长期线程。因为运行循环在没有任何操作时将其线程置于休眠状态，所以它消除了轮询的需要(轮询会浪费CPU周期并阻止处理器本身休眠)，并节省电力。
+您不需要对您创建的任何线程使用 RunLoop ，但这样做可以为用户提供更好的体验。 RunLoop 可以创建使用最少量资源的长期线程。因为 RunLoop 在没有任何操作时将其线程置于休眠状态，所以它消除了轮询的需要(轮询会浪费CPU周期并阻止处理器本身休眠)，并节省电力。
 
-要配置运行循环，您所要做的就是启动线程，获取对运行循环对象的引用，安装事件处理程序，并告诉运行循环运行。 OS X提供的基础结构会自动为您处理主线程运行循环的配置。但是，如果您计划创建长期存在的辅助线程，则必须自己为这些线程配置运行循环
+要配置 RunLoop ，您所要做的就是启动线程，获取对 RunLoop 对象的引用，安装事件处理程序，并告诉 RunLoop 运行。 OS X提供的基础结构会自动为您处理主线程 RunLoop 的配置。但是，如果您计划创建长期存在的辅助线程，则必须自己为这些线程配置 RunLoop 
 
  [Run Loops](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html#//apple_ref/doc/uid/10000057i-CH16-SW1)
 
@@ -74,7 +74,7 @@
 | Direct messaging                             | Cocoa应用程序支持直接在其他线程上执行选择器的能力。 此功能意味着一个线程基本上可以在任何其他线程上执行方法。 因为它们是在目标线程的上下文中执行的，所以以这种方式发送的消息会在该线程上自动序列化 |
 | Global variables, shared memory, and objects | 在两个线程之间传递信息的另一种简单方法是使用全局变量，共享对象或共享内存块。 虽然共享变量快速而简单，但它们也比 Direct messaging 更脆弱。 必须使用锁或其他同步机制小心保护共享变量，以确保代码的正确性。 如果不这样做可能会导致竞争条件，数据损坏或崩溃。 |
 | Conditions                                   | 条件是一种同步工具，可用于控制线程何时执行特定代码部分。 您可以将条件视为gatekeeper，让线程仅在满足所述条件时运行 |
-| Run loop sources                             | 自定义 run loop source 是您设置为在线程上接收特定于应用程序的消息的源。 因为它们是事件驱动的，所以当没有任何事情要做时，运行循环源会让你的线程自动进入休眠状态，从而提高线程的效率 |
+| Run loop sources                             | 自定义 run loop source 是您设置为在线程上接收特定于应用程序的消息的源。 因为它们是事件驱动的，所以当没有任何事情要做时， RunLoop 源会让你的线程自动进入休眠状态，从而提高线程的效率 |
 | Ports and sockets                            | 基于端口的通信是两种线程之间通信的更精细的方式，但它也是一种非常可靠的技术。 更重要的是，端口和套接字可用于与外部实体（例如其他进程和服务）进行通信。 为了提高效率，端口是使用 run loop sources 实现的，因此当端口上没有数据等待时，线程会休眠 |
 | Message queues                               | (不推荐)传统的多处理服务定义了用于管理传入和传出数据的先进先出（FIFO）队列抽象。 尽管消息队列简单方便，但它们并不像其他一些通信技术那样高效 |
 | Cocoa distributed objects                    | (不推荐)分布式对象是一种Cocoa技术，可提供基于端口的通信的高级实现。 尽管可以将此技术用于线程间通信，但由于其产生的开销量很大，因此非常不鼓励这样做。 分布式对象更适合与其他进程通信，其中进程之间的开销已经很高 |
@@ -193,7 +193,7 @@ void LaunchThread()
 
 ### Configuring Thread-Local Storage
 
-每个线程都维护一个 **键值对的字典**，可以从线程中的任何位置访问。 您可以使用此字典存储要在整个线程执行期间保留的信息。 例如，您可以使用它来存储要通过线程运行循环的多次迭代持久化的状态信息。
+每个线程都维护一个 **键值对的字典**，可以从线程中的任何位置访问。 您可以使用此字典存储要在整个线程执行期间保留的信息。 例如，您可以使用它来存储要通过线程 RunLoop 的多次迭代持久化的状态信息。
 
 Cocoa和POSIX以不同的方式存储线程字典，因此您无法混合和匹配对这两种技术的调用。 但是，只要您在线程代码中坚持使用一种技术，最终结果应该是相似的。 
 
@@ -226,7 +226,7 @@ Cocoa和POSIX以不同的方式存储线程字典，因此您无法混合和匹�
 
 ## Writing Your Thread Entry Routine
 
-在大多数情况下，线程的entry routine的结构，在OS X中与在其他平台上的结构相同。 初始化数据结构，执行某些操作或者可选地设置运行循环，并在线程代码完成时进行清理。 根据您的设计，在编写entry routine时可能需要执行一些额外的步骤
+在大多数情况下，线程的entry routine的结构，在OS X中与在其他平台上的结构相同。 初始化数据结构，执行某些操作或者可选地设置 RunLoop ，并在线程代码完成时进行清理。 根据您的设计，在编写entry routine时可能需要执行一些额外的步骤
 
 ### Creating an Autorelease Pool
 
@@ -308,27 +308,29 @@ OS X和iOS为在每个线程中提供run loop内置实现的支持。 应用程�
 }
 ```
 
-执行总工作量的一部分后，线程会短暂运行运行循环，以查看是否有消息到达输入源。 如果没有，则运行循环立即退出，循环继续下一个工作块。 因为处理程序不能直接访问exitNow局部变量，所以退出条件通过线程字典中的键值对进行通信
+执行总工作量的一部分后，线程会短暂运行 RunLoop ，以查看是否有消息到达输入源。 如果没有，则 RunLoop 立即退出，循环继续下一个工作块。 因为处理程序不能直接访问exitNow局部变量，所以退出条件通过线程字典中的键值对进行通信
 
 有关设置输入源的信息: [Configuring Run Loop Sources](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html#//apple_ref/doc/uid/10000057i-CH16-SW7)
 
 # Run Loops
 
-运行循环是与线程相关的基础架构的一部分。运行循环是一个事件处理循环，用于调度任务、协调传入事件的接收。运行循环的目的是在有工作时保持线程忙，并在没有线程时让线程进入休眠状态。
+ RunLoop 是与线程相关的基础架构的一部分。 RunLoop 是一个事件处理循环，用于调度任务、协调传入事件的接收。 RunLoop 的目的是在有工作时保持线程忙，并在没有任务时让线程进入休眠状态。
 
-运行循环管理不是完全自动的。您仍然必须设计线程的代码以在适当的时间启动运行循环并响应传入的事件。 Cocoa和Core Foundation都提供了运行循环对象，以帮助您配置和管理线程的运行循环。
+ RunLoop 管理不是完全自动的。您仍然必须设计线程的代码以在适当的时间启动 RunLoop 并响应传入的事件。 Cocoa和Core Foundation都提供了 RunLoop 对象，以帮助您配置和管理线程的 RunLoop 。
 
-- 应用程序不需要显式创建这些对象
-- 每个线程（包括应用程序的主线程）都有一个关联的运行循环对象
-- 只有辅助线程需要显式运行其运行循环
-- 作为应用程序启动过程的一部分，应用程序框架会自动在主线程上设置并运行运行循环
+- 应用程序不需要显式创建这些 RunLoop 对象
+- 每个线程（包括应用程序的主线程）都有一个关联的 RunLoop 对象
+- 只有子(辅助)线程需要显式运行其 RunLoop 
+- 作为应用程序启动过程的一部分，应用程序框架会自动在主线程上设置并运行 RunLoop 
 
 ## Anatomy of a Run Loop
 
-运行循环从**两种**不同类型的源接收事件。 
+ RunLoop 从**两种**不同类型的源接收事件。 
 
 - 输入源（input source）提供异步事件，通常是来自另一个线程或来自不同应用程序的消息。 
-- 定时器源（timer source）提供同步事件，发生在预定时间或重复间隔。 两种类型的源都使用特定于应用程序的处理程序例程来处理事件到达时。
+- 定时器源（timer source）提供同步事件，发生在预定时间或重复间隔。
+
+两种类型的源都使用特定于应用程序的处理程序例程来处理事件到达。
 
 
 
@@ -336,13 +338,13 @@ OS X和iOS为在每个线程中提供run loop内置实现的支持。 应用程�
 
 
 
-除了处理输入源之外，运行循环还会生成有关运行循环行为的通知。 已注册的运行循环观察器可以接收这些通知并使用它们在线程上执行其他处理。 可以使用Core Foundation在线程上安装运行循环观察器。
+除了处理输入源之外， RunLoop 还会生成有关 RunLoop 行为的通知。 已注册的 RunLoop 观察器可以接收这些通知并使用它们在线程上执行其他处理。 可以使用Core Foundation在线程上安装 RunLoop 观察器。
 
 ### Run Loop Modes
 
 | Mode           | Name                                                         | Description                                                  |
 | -------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Default        | `NSDefaultRunLoopMode`(Cocoa)`kCFRunLoopDefaultMode` (Core Foundation) | 默认模式是用于大多数操作的模式。 大多数情况下，应该使用此模式启动运行循环并配置输入源 |
+| Default        | `NSDefaultRunLoopMode`(Cocoa)`kCFRunLoopDefaultMode` (Core Foundation) | 默认模式是用于大多数操作的模式。 大多数情况下，应该使用此模式启动 RunLoop 并配置输入源 |
 | Connection     | `NSConnectionReplyMode`(Cocoa)                               | （不推荐）Cocoa 使用这个mode 与`NSConnection` 对象配合用以监视网络应答 |
 | Modal          | `NSModalPanelRunLoopMode`(Cocoa)                             | Cocoa使用此模式来识别用于模态面板的事件                      |
 | Event tracking | `NSEventTrackingRunLoopMode`(Cocoa)                          | Cocoa使用此模式限制鼠标拖动循环和其他的用户界面跟踪循环期间的传入事件 |
@@ -354,7 +356,7 @@ OS X和iOS为在每个线程中提供run loop内置实现的支持。 应用程�
 
 #### Port-Based Sources
 
-只需创建一个端口对象，并使用NSPort的方法将该端口添加到运行循环中。 port对象会处理所需输入源的创建和配置
+只需创建一个端口对象，并使用NSPort的方法将该端口添加到 RunLoop 中。 port对象会处理所需输入源的创建和配置
 
 NSPort的子类：
 
@@ -364,11 +366,11 @@ NSPort的子类：
 
 #### Custom Input Sources
 
-[ `CFRunLoopSourceRef`](https://developer.apple.com/documentation/corefoundation/cfrunloopsource)opaque type in Core Foundation
+[ `CFRunLoopSourceRef`](https://developer.apple.com/documentation/corefoundation/cfrunloopsource) opaque type in Core Foundation
 
 可以使用多个回调函数配置自定义输入源。 
 
-Core Foundation在不同的点调用这些函数来配置源，处理传入事件，并在源从运行循环中被删除时拆除源。
+Core Foundation在不同的点调用这些函数来配置源，处理传入事件，并在源从 RunLoop 中被删除时拆除源。
 
 除了在事件到达时定义自定义源的行为，还必须定义事件传递机制。 这部分源在一个单独的线程上运行，负责为输入源提供其数据，并在数据准备好进行处理时发出信号。 事件传递机制取决于开发的逻辑，但不必过于复杂
 
@@ -376,9 +378,9 @@ Core Foundation在不同的点调用这些函数来配置源，处理传入事�
 
 | Methods                                                      | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| `performSelectorOnMainThread:withObject:waitUntilDone:` `performSelectorOnMainThread:withObject:waitUntilDone:modes:` | 在该线程的下一个运行循环周期中，在应用程序的主线程上执行指定的选择器，阻止当前线程直到执行选择器 |
+| `performSelectorOnMainThread:withObject:waitUntilDone:` `performSelectorOnMainThread:withObject:waitUntilDone:modes:` | 在该线程的下一个 RunLoop 周期中，在应用程序的主线程上执行指定的选择器，阻止当前线程直到执行选择器 |
 | `performSelector:onThread:withObject:waitUntilDone:` `performSelector:onThread:withObject:waitUntilDone:modes:` | 在具有`NSThread`对象的任何线程上执行指定的选择器，阻止当前线程直到执行选择器的选项。 |
-| `performSelector:withObject:afterDelay:`  `performSelector:withObject:afterDelay:inModes:` | 在下一个运行循环周期和可选的延迟周期之后，在当前线程上执行指定的选择器。 因为它等待直到下一个运行循环周期来执行选择器，自动短时地延迟当前执行代码的。 多个排队选择器按排队顺序依次执行。 |
+| `performSelector:withObject:afterDelay:`  `performSelector:withObject:afterDelay:inModes:` | 在下一个 RunLoop 周期和可选的延迟周期之后，在当前线程上执行指定的选择器。 因为它等待直到下一个 RunLoop 周期来执行选择器，自动短时地延迟当前执行代码的。 多个排队选择器按排队顺序依次执行。 |
 | `cancelPreviousPerformRequestsWithTarget:`  `cancelPreviousPerformRequestsWithTarget:selector:object:` | 允许取消发送到当前线程的消息 `performSelector:withObject:afterDelay:` `performSelector:withObject:afterDelay:inModes:` method. |
 
 #### Timer Sources
@@ -388,19 +390,19 @@ Core Foundation在不同的点调用这些函数来配置源，处理传入事�
 
 计时器源在将来的预设时间将事件同步地传递给线程，计时器不是实时机制，
 
-定时器与运行循环的特定模式相关联，如果计时器未处于运行循环当前正在监视的模式，则在使用其中一个计时器支持的模式运行运行循环之前，它不会触发。类似地，如果计时器在运行循环处于执行处理程序例程的过程中触发，则计时器将等待直到下一次通过运行循环来调用其处理程序例程。如果运行循环根本没有运行，则计时器永远不会触发。
+定时器与 RunLoop 的特定模式相关联，如果计时器未处于 RunLoop 当前正在监视的模式，则在使用其中一个计时器支持的模式运行 RunLoop 之前，它不会触发。类似地，如果计时器在 RunLoop 处于执行处理程序例程的过程中触发，则计时器将等待直到下一次通过 RunLoop 来调用其处理程序例程。如果 RunLoop 根本没有运行，则计时器永远不会触发。
 
 
 
 ## When Would You Use a Run Loop?
 
-需要显式运行运行循环的唯一时间是为应用程序创建辅助线程
+需要显式运行 RunLoop 的唯一时间是为应用程序创建辅助线程
 
-应用程序主线程的运行循环是一个至关重要的基础架构。因此，应用程序框架提供了运行主应用程序循环的代码并自动启动该循环(主线程中的runloop是自启动的)
+应用程序主线程的 RunLoop 是一个至关重要的基础架构。因此，应用程序框架提供了运行主应用程序循环的代码并自动启动该循环(主线程中的runloop是自启动的)
 
  iOS中的UIApplication的运行方法（或OS X中的NSApplication）启动应用程序的主循环作为正常启动序列的一部分
 
-对于辅助线程，需要确定是否需要运行循环，如果是，请自行配置并启动它。在所有情况下，都不需要启动线程的运行循环。例如，如果使用线程执行某些长时间运行且预定义的任务，则不要启动运行循环。运行循环适用于您希望与线程进行更多交互的情况。例如，如果计划执行以下任何操作，则需要启动运行循环：
+对于辅助线程，需要确定是否需要 RunLoop ，如果是，请自行配置并启动它。在所有情况下，都不需要启动线程的 RunLoop 。例如，如果使用线程执行某些长时间运行且预定义的任务，则不要启动 RunLoop 。 RunLoop 适用于您希望与线程进行更多交互的情况。例如，如果计划执行以下任何操作，则需要启动 RunLoop ：
 
 - 使用端口或自定义输入源与其他线程通信
 - 在线程上使用计时器
@@ -499,7 +501,7 @@ Ex: Running a run loop
 - 一个回调函数，用于执行客户端发送的请求
 - 一个取消函数，用以使输入源作废
 
-应用程序的主线程维护对输入源，该输入源的自定义命令缓冲区以及安装输入源的运行循环的引用。 当主线程有一个任务，它想要传递给工作线程时，它会向命令缓冲区发布一个命令以及工作线程启动任务所需的任何信息。 （因为工作线程的主线程和输入源都可以访问命令缓冲区，所以必须同步该访问。）一旦命令发布，主线程就会发出信号输入源并唤醒工作线程的运行循环。 收到唤醒命令后，运行循环调用输入源的处理程序，该处理程序处理命令缓冲区中的命令，设计如图：
+应用程序的主线程维护对输入源，该输入源的自定义命令缓冲区以及安装输入源的 RunLoop 的引用。 当主线程有一个任务，它想要传递给工作线程时，它会向命令缓冲区发布一个命令以及工作线程启动任务所需的任何信息。 （因为工作线程的主线程和输入源都可以访问命令缓冲区，所以必须同步该访问。）一旦命令发布，主线程就会发出信号输入源并唤醒工作线程的 RunLoop 。 收到唤醒命令后， RunLoop 调用输入源的处理程序，该处理程序处理命令缓冲区中的命令，设计如图：
 
 ![Operating a custom input source](../../其他文档/resources/custominputsource.png)
 
@@ -688,7 +690,7 @@ Cocoa和Core Foundation都提供了基于端口的对象，用于线程之间或
 
 #### Configuring an NSMachPort Object
 
-要与NSMachPort对象建立本地连接，要创建端口对象并将其添加到主线程的运行循环中。启动辅助线程时，将同一对象传递给线程的入口函数。 辅助线程可以使用相同的对象将消息发送回主线程。
+要与NSMachPort对象建立本地连接，要创建端口对象并将其添加到主线程的 RunLoop 中。启动辅助线程时，将同一对象传递给线程的入口函数。 辅助线程可以使用相同的对象将消息发送回主线程。
 
 ##### Implementing the Main Thread Code
 
@@ -1021,7 +1023,7 @@ for (int i = 0; i < 100; ++i) {
 
 ### Atomic Operations
 
-原子操作是一种简单的同步形式，适用于简单的数据类型。 原子操作的优点是它们不会阻止竞争线程。 对于简单的操作，例如递增计数器变量，这可以带来比锁定更好的性能。
+原子操作是一种简单的同步形式，适用于简单的数据类型。 原子操作的优点是它们不会阻止竞争线程。 对于简单的操作，例如递增计数器变量，这可以带来比锁更好的性能。
 
 ```c
 #include <libkern/OSAtomic.h>
@@ -1074,7 +1076,7 @@ typedef struct elem {
 
 ### Perform Selector Routines
 
-Cocoa应用程序具有以同步方式将消息传递到单个线程的便捷方式。 NSObject类声明了在应用程序的某个活动线程上执行选择器的方法。 这些方法允许线程异步传递消息，并保证它们将由目标线程同步执行。 例如，可以使用执行选择器消息将分布式计算的结果传递到应用程序的主线程或指定线程。 每个执行选择器的请求都在目标线程的运行循环中排队，然后按接收顺序依次处理请求。
+Cocoa应用程序具有以同步方式将消息传递到单个线程的便捷方式。 NSObject类声明了在应用程序的某个活动线程上执行选择器的方法。 这些方法允许线程异步传递消息，并保证它们将由目标线程同步执行。 例如，可以使用执行选择器消息将分布式计算的结果传递到应用程序的主线程或指定线程。 每个执行选择器的请求都在目标线程的 RunLoop 中排队，然后按接收顺序依次处理请求。
 
 
 
