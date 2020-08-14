@@ -10,6 +10,13 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
+@interface ServiceManager ()
+
+@property (nonatomic, strong) NSRecursiveLock *lock;
+
+@end
+
+
 @implementation ServiceManager
 
 +(void)load {
@@ -20,23 +27,32 @@
     static ServiceManager *instance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        instance = [[ServiceManager alloc] init];
+        if (!instance) {
+            instance = [[ServiceManager alloc] init];
+        }
+        if (!instance.lock) {
+            instance.lock = [[NSRecursiveLock alloc] init];
+        }
+        
     });
     
     return instance;
 }
 
-
 - (NSMutableDictionary *)cps {
+    [self.lock lock];
     if (!_cps) {
         _cps = [[NSMutableDictionary alloc] init];
     }
+    [self.lock unlock];
     return _cps;
 }
 
 - (void)registerService:(Protocol *)p withClass:(Class)cls {
     if ([cls conformsToProtocol:@protocol(ServiceProtocol)]) {
+        [self.lock lock];
         [self.cps setObject:cls forKey:NSStringFromProtocol(p)];
+        [self.lock unlock];
     }
 }
 
@@ -64,17 +80,11 @@
     
     SEL sel =  NSSelectorFromString(@"moduleAMethod");
     if ([obj respondsToSelector:sel]) {
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
         [obj performSelector:sel];
+        #pragma clang diagnostic pop
     }
-}
-
-- (void)methodOfModuleB {
-//    id <ModuleBService> obj = [self createService:@protocol(ModuleBService)];
-//    [obj moduleBMethod];
-    
-    id obj = [[ServiceManager shareInstance] createService:NSProtocolFromString(@"ModuleBService")];
-    SEL sel = NSSelectorFromString(@"moduleBMethod");
-    [obj performSelector:sel];
 }
 
 @end

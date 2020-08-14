@@ -27,7 +27,4 @@
 
 - (void)methodOfModuleA;
 
-- (void)methodOfModuleB;
-
-
 @end

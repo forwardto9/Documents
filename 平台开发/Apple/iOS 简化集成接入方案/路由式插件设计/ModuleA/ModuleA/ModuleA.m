@@ -7,6 +7,7 @@
 //
 
 #import "ModuleA.h"
+#import "ServiceRouter.h"
 
 @implementation ModuleA
 
@@ -43,22 +44,16 @@
 
 - (void) callModuleB {
     NSLog(@"%s", __FUNCTION__);
-//    id <ModuleBService> obj = [[ModuleCore shareInstance] createService:@protocol(ModuleBService)];
-//    [obj moduleBMethod];
-    
-    Class coreModule = NSClassFromString(@"ModuleCore");
-    if (coreModule) {
-        SEL instanceSEL = NSSelectorFromString(@"shareInstance");
-        id sharedInstance = ((id(*)(id, SEL))[coreModule methodForSelector:instanceSEL])(coreModule,instanceSEL);
-        SEL creator = NSSelectorFromString(@"createService:");
-        id obj =  ((id (*)(id, SEL, Protocol*))[sharedInstance methodForSelector:creator])(sharedInstance, creator, NSProtocolFromString(@"ModuleBService"));
-        SEL sel =  NSSelectorFromString(@"moduleBMethod");
-        [obj performSelector:sel];
+
+    // 方式一，不引用
+    Class serviceRouter = NSClassFromString(@"ServiceRouter");
+    if (serviceRouter) {
+        SEL instanceSEL = NSSelectorFromString(@"openURL:withData:completionHandler:");
+        __unused BOOL sharedInstance = ((BOOL(*)(id, SEL, NSURL*, NSDictionary *, id))[serviceRouter methodForSelector:instanceSEL])(serviceRouter,instanceSEL,[NSURL URLWithString:@"tpns://call.service/ModuleB.ModuleBService.moduleBMethod"], nil, nil);
     }
     
-//    id obj = [[ModuleCore shareInstance] createService:NSProtocolFromString(@"ModuleBService")];
-//    SEL sel =  NSSelectorFromString(@"moduleBMethod");
-//    [obj performSelector:sel];
+    // 方式二，引用
+    [ServiceRouter openURL:[NSURL URLWithString:@"tpns://call.service/ModuleB.ModuleBService.moduleBMethod"] withData:nil completionHandler:nil];
 }
 
 @end

@@ -9,12 +9,14 @@
 /* Begin PBXBuildFile section */
 		C2FA33CD24E3CFD700F56377 /* ModuleA.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FA33CC24E3CFD700F56377 /* ModuleA.m */; };
 		C2FA341024E3EBBE00F56377 /* ModuleA.h in Headers */ = {isa = PBXBuildFile; fileRef = C2FA340F24E3EBBE00F56377 /* ModuleA.h */; };
+		C2FA343F24E6322500F56377 /* ServiceRouter.h in Headers */ = {isa = PBXBuildFile; fileRef = C2FA343E24E6322500F56377 /* ServiceRouter.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C2FA33C724E3CFD700F56377 /* libModuleA.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libModuleA.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2FA33CC24E3CFD700F56377 /* ModuleA.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModuleA.m; sourceTree = "<group>"; };
 		C2FA340F24E3EBBE00F56377 /* ModuleA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModuleA.h; sourceTree = "<group>"; };
+		C2FA343E24E6322500F56377 /* ServiceRouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServiceRouter.h; path = ../../ModuleCore/ModuleCore/ServiceRouter.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +49,7 @@
 		C2FA33C924E3CFD700F56377 /* ModuleA */ = {
 			isa = PBXGroup;
 			children = (
+				C2FA343E24E6322500F56377 /* ServiceRouter.h */,
 				C2FA340F24E3EBBE00F56377 /* ModuleA.h */,
 				C2FA33CC24E3CFD700F56377 /* ModuleA.m */,
 			);
@@ -61,6 +64,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2FA341024E3EBBE00F56377 /* ModuleA.h in Headers */,
+				C2FA343F24E6322500F56377 /* ServiceRouter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
