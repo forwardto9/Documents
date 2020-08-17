@@ -15,7 +15,7 @@
 
 @end
 
-@implementation NSObject (BHRetType)
+@implementation NSObject (TPNSReturnType)
 
 + (id)tpnsGetReturnFromInv:(NSInvocation *)inv withSig:(NSMethodSignature *)sig {
     NSUInteger length = [sig methodReturnLength];
