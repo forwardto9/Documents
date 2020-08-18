@@ -123,7 +123,10 @@ return @(ret); \
     NSString *selectorStr = subPaths.lastObject;
     Protocol *protocol = NSProtocolFromString(protocolStr);
     SEL selector = NSSelectorFromString(selectorStr);
-    id obj = [[ServiceManager shareInstance] createService:protocol];
+    // 使用 +load
+//    id obj = [[ServiceManager shareInstance] createService:protocol];
+    // 未使用 +load
+    id obj = [[ServiceManager shareInstance] createService:protocol withClass:NSClassFromString(subPaths.firstObject)];
     id returnValue = [self safePerformAction:selector forTarget:obj withParams:data];
     !handler?:handler(obj, returnValue);
 }

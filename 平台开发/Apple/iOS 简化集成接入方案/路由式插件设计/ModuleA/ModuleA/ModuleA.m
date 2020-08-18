@@ -11,6 +11,7 @@
 
 @implementation ModuleA
 
+#if 0
 +(void)load {
     NSLog(@"%s", __FUNCTION__);
 //    [[ModuleCore shareInstance] registerService:@protocol(ModuleAService) withClass:[self class]];
@@ -23,6 +24,7 @@
         ((void * (*)(id, SEL, Protocol*, Class))[sharedInstance methodForSelector:reg])(sharedInstance, reg, @protocol(ModuleAService), [self class]);
     }
 }
+#endif
 
 + (instancetype)shareInstance {
     static ModuleA *instance;

@@ -71,6 +71,25 @@
     return [[implClass alloc] init];
 }
 
+- (id)createService:(Protocol *)p withClass:(Class)cls {
+    Class implClass =  [self.cps objectForKey:NSStringFromProtocol(p)];
+    if (implClass == nil && cls != nil) {
+        [self registerService:p withClass:cls];
+        implClass = cls;
+    }
+    id implInstance = nil;
+    if ([[implClass class] respondsToSelector:@selector(isSubModule)]) {
+        if ([[implClass class] isSubModule]) {
+            if ([[implClass class] respondsToSelector:@selector(shareInstance)])
+                implInstance = [[implClass class] shareInstance];
+            else
+                implInstance = [[implClass alloc] init];
+            return implInstance;
+        }
+    }
+    return [[implClass alloc] init];
+}
+
 
 - (void)methodOfModuleA {
 //    id <ModuleAService> obj = [self createService:@protocol(ModuleAService)];

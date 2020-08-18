@@ -23,6 +23,7 @@
 
 - (void)registerService:(Protocol *)p withClass:(Class)cls;
 - (id)createService:(Protocol *)p;
+- (id)createService:(Protocol *)p withClass:(Class)cls;
 
 
 - (void)methodOfModuleA;
