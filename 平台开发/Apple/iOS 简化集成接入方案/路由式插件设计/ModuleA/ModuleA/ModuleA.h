@@ -12,6 +12,7 @@
 @protocol ModuleAService <NSObject>
 
 - (void)moduleAMethod;
+- (NSString *)moduleAMethodWithRetVal:(id)x;
 
 @end
 

@@ -63,6 +63,7 @@ return @(ret); \
         case '@': { // id
             id ret = nil;
             [inv getReturnValue:&ret];
+//            return CFRetain((__bridge CFTypeRef)(ret));
             return ret;
         };
             
@@ -114,7 +115,7 @@ return @(ret); \
     return YES;
 }
 
-+ (void)openURL:(NSURL *)url withData:(NSDictionary *)data completionHandler:(void (*)(id  _Nullable __strong, id  _Nullable __strong))handler {
++ (void)openURL:(NSURL *)url withData:(NSDictionary *)data completionHandler:(void (^)(id  _Nullable __strong, id  _Nullable __strong))handler {
     if (![self canOpenURL:url]) return;
     
     NSArray<NSString *> *pathComponents = url.pathComponents;
@@ -127,6 +128,7 @@ return @(ret); \
 //    id obj = [[ServiceManager shareInstance] createService:protocol];
     // 未使用 +load
     id obj = [[ServiceManager shareInstance] createService:protocol withClass:NSClassFromString(subPaths.firstObject)];
+    [self safePerformAction:selector forTarget:obj withParams:data];
     id returnValue = [self safePerformAction:selector forTarget:obj withParams:data];
     !handler?:handler(obj, returnValue);
 }
@@ -142,22 +144,27 @@ return @(ret); \
     if (!inv) { return nil; }
     [inv setTarget:target];
     [inv setSelector:action];
-    NSArray<NSString *> *keys = params.allKeys;
-    keys = [keys sortedArrayUsingComparator:^NSComparisonResult(NSString *  _Nonnull obj1, NSString *  _Nonnull obj2) {
-        if (obj1.integerValue < obj2.integerValue) {
-            return NSOrderedAscending;
-        } else if (obj1.integerValue == obj2.integerValue) {
-            return NSOrderedSame;
-        } else {
-            return NSOrderedDescending;
-        }
-    }];
-    [keys enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        id value = params[obj];
-        [inv setArgument:&value atIndex:idx+2];
-    }];
+//    NSArray<NSString *> *keys = params.allKeys;
+//    keys = [keys sortedArrayUsingComparator:^NSComparisonResult(NSString *  _Nonnull obj1, NSString *  _Nonnull obj2) {
+//        if (obj1.integerValue < obj2.integerValue) {
+//            return NSOrderedAscending;
+//        } else if (obj1.integerValue == obj2.integerValue) {
+//            return NSOrderedSame;
+//        } else {
+//            return NSOrderedDescending;
+//        }
+//    }];
+//    [keys enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//        id value = params[obj];
+//        [inv setArgument:&value atIndex:idx+2];
+//    }];
+    if (params) {
+        [inv setArgument:&params atIndex:2];
+    }
+    
     [inv invoke];
-    return [NSObject tpnsGetReturnFromInv:inv withSig:sig];
+    id o = [NSObject tpnsGetReturnFromInv:inv withSig:sig];
+    return o;
 }
 
 @end

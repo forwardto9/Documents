@@ -58,4 +58,10 @@
     [ServiceRouter openURL:[NSURL URLWithString:@"tpns://call.service/ModuleB.ModuleBService.moduleBMethod"] withData:nil completionHandler:nil];
 }
 
+- (NSString *)moduleAMethodWithRetVal:(id)x {
+    // 此处会引发crash -[CFString release]: message sent to deallocated instance 0x60700001bdf0
+    NSData *data = [NSJSONSerialization dataWithJSONObject:x options:NSJSONWritingSortedKeys error:nil];
+    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+}
+
 @end

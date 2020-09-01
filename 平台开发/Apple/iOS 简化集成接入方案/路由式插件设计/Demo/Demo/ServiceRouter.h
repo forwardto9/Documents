@@ -13,7 +13,7 @@
 
 // tpns://call.service/className.protocolName.selector
 + (BOOL)canOpenURL:(nonnull NSURL *)url;
-+ (void)openURL:(nonnull NSURL *)url withData:(nullable NSDictionary *)data completionHandler:(void (*_Nullable) ( id _Nullable target, id _Nullable returnValue))handler;
++ (void)openURL:(nonnull NSURL *)url withData:(nullable NSDictionary *)data completionHandler:(void (^_Nullable) ( id _Nullable target, id _Nullable returnValue))handler;
 
 @end
 

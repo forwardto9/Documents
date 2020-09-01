@@ -29,8 +29,14 @@ int main(int argc, const char * argv[]) {
         
         
         [ServiceRouter openURL:[NSURL URLWithString:@"tpns://call.service/ModuleA.ModuleAService.moduleAMethod"] withData:nil completionHandler:nil];
-        
+        [ServiceRouter openURL:[NSURL URLWithString:@"tpns://call.service/ModuleA.ModuleAService.moduleAMethodWithRetVal:"] withData:@{@"key0":@"value0", @"key1":@"value1",@"key2":@"value2"} completionHandler:^(id  _Nullable target, id  _Nullable returnValue) {
+            NSLog(@"%@----------------%@", target, returnValue);
+        }];
         
     }
+    [ServiceRouter openURL:[NSURL URLWithString:@"tpns://call.service/ModuleA.ModuleAService.moduleAMethodWithRetVal:"] withData:@{@"key0":@"value0", @"key1":@"value1",@"key2":@"value2"} completionHandler:^(id  _Nullable target, id  _Nullable returnValue) {
+        NSLog(@"%@----------------%@", target, returnValue);
+    }];
+    
     return 0;
 }
